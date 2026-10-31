@@ -1,73 +1,176 @@
-# DAN6CD Weapon Sling — STOCK Framework & Clothing Edition
+# DAN6CD WEAPON SLING
+### FREE EDITION | Multi-Framework FiveM Resource
 
-**Version: 2.0.0-clean-test — free, source-readable testing release.**
+**Realistic Weapon Carrying • Live Attachment Editor • Outfit-Based Presets • Physical Weapon Drops**
 
-This is a **clean standalone rebuild** based on the earlier editable Weapon Sling design. It is not a decrypted copy of the Cfx Portal asset and **does not replace your original weapon_sling or physical_equipment** project.
+Take weapon realism to the next level with **DAN6CD Weapon Sling**, a free weapon-carrying system designed for FiveM roleplay servers.
 
-## What's included
+Instead of making rifles disappear when unequipped, this resource lets players visibly carry supported weapons across their chest or back, interact with physical weapon drops, and customize weapon positions to match their character's clothing.
 
-- A single GTA V **Assault Rifle (`WEAPON_ASSAULTRIFLE`)** carried on front or back.
-- Uses the stock in-game **`w_ar_assaultrifle`** rifle prop, built-in male/female freemode characters, and whatever **stock clothing** the player wears. **No streamed YDD/YTD clothing**, custom textures, shop items, menus, or asset packs.
-- Server-validated inventory-to-front/back/world transfers, serial verification, MySQL persistence of slung or dropped weapons, ground pickup with **E**, and lightweight client-only props synced to nearby players.
-- No ox_lib requirement; **oxmysql** is required for persistence.
-- Vanilla player clothing is **not modified by the script**. There is no visual strap/clothing asset in this edition; the weapon is attached to the ped as a prop.
+Built with support for **Qbox, QBCore, and ESX Legacy**, using GTA V's original weapon models and freemode clothing.
 
-## Stock framework support
+---
 
-| Framework | Inventory | Notes |
-|---|---|---|
-| Qbox `qbx_core` | `ox_inventory` | Primary supported adapter |
-| QBCore `qb-core` | `qb-inventory` | Refuses ambiguous multiple Assault Rifles |
-| QBCore `qb-core` | `ox_inventory` | Requires compatible QB/ox integration |
-| ESX Legacy `es_extended` | `ox_inventory` | Preferred ESX integration |
-| ESX Legacy `es_extended` | Built-in ESX loadout | Best effort; one rifle per weapon type, serial stored separately |
+## KEY FEATURES
 
-Only one inventory should be active. Other frameworks/inventories are not implemented. **Live FiveM end-to-end testing is still required** for each combination.
+### 🔫 1. Realistic Front & Back Weapon Sling
 
-## Installation
+- Visibly carry a supported rifle across the chest or back.
+- Switch between front and back sling positions.
+- Attach weapons directly to the character's skeleton.
+- Weapons follow player movement and character animations.
+- Independent front and back attachment configurations.
+- Weapon props remain visible to nearby players.
 
-1. Back up your database, and **stop** the old `weapon_sling`, `weapon_sling_free`, and any equipment script controlling the same weapon. Never run this beside `physical_core` weapon ownership or `physical_equipment` for the same rifle.
-2. Extract `dan6cd_weapon_sling/` to `resources/[standalone]/`.
-3. Import **`database.sql`** into your server's database. Creates independent `dan6cd_sling_*` tables; no migration from the old build.
-4. Set the **framework and inventory to start first**, then `oxmysql`, then the resource (oxmysql itself may start before the framework):
+**Controls:**
+- `J` — Front Sling
+- `K` — Back Sling
+- `/sling` — Toggle Front Sling
+- `/backsling` — Toggle Back Sling
 
-```cfg
-ensure oxmysql
-ensure qbx_core        # OR qb-core OR es_extended
-ensure ox_inventory   # OR qb-inventory; ESX native needs no inventory resource
-ensure dan6cd_weapon_sling
-```
+### 🛠️ 2. Live 3D Weapon Attachment Editor
 
-Remove the lines for resources you do not use. Start `ox_inventory` in your normal framework-approved order. Do not run both ox_inventory and qb-inventory.
+Customize rifle placement directly in-game without manually editing configuration files.
 
-5. Leave `Config.Framework` and `Config.Inventory` at `auto` unless your server has special resource names. Confirm the server console prints the detected pair.
-6. Equip a serialized stock Assault Rifle; press `J` or use `/sling` to put it on your front; `/backsling` for your back. Use the same command to return the rifle to inventory. Use `/dropgun` while holding a rifle, or `/dropgun front` / `/dropgun back` to place a slung rifle on the ground. Press **E** near a dropped rifle to pick it up.
-7. Test weapon ammo, serial, components, inventory-slot return, relog/restart, full inventory refusal, nearby players, ground pickup contention, and both ped models **before publishing on a live server**.
+**Editor Features:**
+- Real-time weapon positioning.
+- Six-axis position and rotation adjustments.
+- Move weapons left, right, up, down, forward, and backward.
+- Rotate across X, Y, and Z axes.
+- Fast and precise adjustment controls.
+- Preview the weapon on the character before saving.
+- Separate front and back sling calibration.
+- Reset to default positioning.
+- Save custom attachment offsets.
 
-## Vanilla clothing options
+**Commands:**
+- `/slingedit front`
+- `/slingedit back`
 
-`Config.RequireStockClothing=false` by default. This supports standard male and female freemode ped models with their normal GTA clothing; it never spawns an outfit or adds mod clothing.
+**Editor Controls:**
 
-If you want to require a specific **stock outfit that looks like it has a strap**, choose that outfit on your own stock server, run `/slingclothes` and read its **component:drawable/texture** values. Enter those numbers into `Config.StockClothing` and set `RequireStockClothing=true`. The sample presets included in the config were inherited from the previous configuration and are **NOT guaranteed to be part of every stock server/DLC build**. Changing clothing validation is client-side/cosmetic; server-side inventory transfers remain authenticated.
+| Key | Function |
+|---|---|
+| Left / Right Arrows | Move weapon left / right |
+| Up / Down Arrows | Move weapon up / down |
+| Page Up / Page Down | Move weapon forward / backward |
+| Tap Left Shift | Switch rotation axis Z → Y → X |
+| Q / E | Rotate selected axis |
+| Hold Left Shift | Faster adjustments |
+| Enter | Save calibration |
+| Backspace | Cancel editing |
+| Delete | Preview default position |
 
-## Commands
+### 👕 3. Stock GTA V Clothing Compatibility
 
-- `J` or `/sling` — store/return the equipped Assault Rifle on the front.
-- `/backsling` — store/return from back.
-- `/dropgun` — ground-drop equipped Assault Rifle.
-- `/dropgun front` / `/dropgun back` — ground-drop a slung rifle.
-- `E` near ground rifle — pick up.
-- `/slingclothes` — inspect your current stock clothing indices.
-- `/slingstatus` — view your persistent storage entries (including pending / returning rows).
+Designed to work with standard FiveM freemode clothing without requiring additional custom clothing downloads.
 
-## Data integrity and troubleshooting
+- Supports male and female freemode characters.
+- Uses existing GTA V clothing and character components.
+- No custom `.ydd` or `.ytd` clothing streams required.
+- Compatible with different jackets, hoodies, shirts, and tactical outfits.
+- Adjust rifle placement to minimize clipping with clothing.
+- Front and back attachments can be customized independently.
 
-This resource is **one-authority-at-a-time**: inventory owns the rifle until the server removes its serial; the MySQL row owns it while slung/dropped; restoring the weapon removes the row. Client props are visual-only. It deliberately refuses to create a second copy of a serial that is already in inventory.
+**No additional weapon or clothing models are required for the initial Assault Rifle release.**
 
-**Important non-atomic boundary:** Inventory APIs and SQL are two different systems. Crashes between them can leave a row in `pending` or `returning`. The script **never auto-retries ambiguous transfers**, which would risk duplication. An administrator must inspect the inventory item and `dan6cd_sling_items` row by serial before repairing it. See `TROUBLESHOOTING.md`.
+### 💾 4. Outfit-Based Weapon Position Presets
 
-**No automatic migration:** Do not import the old `weapon_sling_items`, `weapon_sling_transforms` or `physical_core` data. Return weapons with the prior script and remove it before using this edition. Any migration needs a verified one-to-one serial audit.
+Different clothing combinations may require different weapon positions.
 
-**No custom sling animation/editor:** The original large editor, stream assets, debugging commands, duplicate hooks and clothing YDD/YTD models are intentionally excluded. Standard weapon draw/equip follows the stock inventory system. This release focuses on essential, stable functionality.
+The attachment editor includes an outfit-based calibration system designed to save and load custom positions automatically.
 
-**Not live certified:** The code has been statically checked, but no full server with Qbox, QBCore or ESX is available in this environment. Publish as a test release until each supported path is verified.
+- Store custom weapon offsets in MySQL.
+- Save presets for different clothing combinations.
+- Maintain separate front and back positions.
+- Load saved presets when using the same outfit again.
+- Restore saved positioning after returning a rifle to inventory and re-slinging it.
+- Synchronize attachment configurations for nearby players.
+- Fall back to default settings when an outfit has no saved preset.
+
+### 📦 5. Physical Weapon Drop & Pickup
+
+Weapons can exist as visible props in the game world instead of disappearing immediately.
+
+- Drop supported weapons onto the ground.
+- Pick up dropped weapons with the interaction key.
+- Ground placement designed to prevent floating weapons.
+- Persistent server-side weapon records.
+- Preserve supported weapon metadata during transfers.
+
+**Controls:**
+- `/dropgun` — Drop the equipped rifle.
+- `/dropgun front` — Drop the front-slung rifle.
+- `/dropgun back` — Drop the back-slung rifle.
+- `E` — Pick up a nearby dropped weapon.
+
+### 🔐 6. Server-Side Weapon Management
+
+Weapon transfers are processed through server-side checks to help maintain consistent ownership and reduce duplication risks.
+
+- MySQL-backed weapon persistence.
+- Inventory integration.
+- Weapon serial and metadata handling.
+- Validation during sling, inventory, drop, and pickup transfers.
+- Server-side control over weapon location changes.
+
+### 🌐 7. Multi-Framework Compatibility
+
+Designed with adapters for popular FiveM frameworks.
+
+| Framework | Inventory |
+|---|---|
+| Qbox | ox_inventory |
+| QBCore | qb-inventory |
+| QBCore | ox_inventory |
+| ESX Legacy | Native weapon loadout |
+| ESX Legacy | ox_inventory |
+
+Framework-specific behavior depends on the installed framework and inventory versions.
+
+### ⚙️ 8. Lightweight & Configurable
+
+- Lua-based resource.
+- Uses built-in GTA V weapon assets.
+- Configurable keybindings.
+- Front and back attachment offsets.
+- Database-backed calibration profiles.
+- No custom clothing streaming dependency.
+- Separate, modular implementation suitable for stock framework servers.
+
+---
+
+## CURRENT WEAPON SUPPORT
+
+**Initial Supported Weapon:**
+- Assault Rifle — `WEAPON_ASSAULTRIFLE`
+
+Additional weapon types and attachment profiles may be introduced in future releases.
+
+## DEVELOPMENT STATUS
+
+**Version:** 2.1.2 — Free Testing Edition
+
+The resource has undergone Lua syntax checks and simulated framework, inventory, database, and editor tests.
+
+Full compatibility, attachment appearance, synchronization, and persistence still require verification on live FiveM servers. Features may require additional adjustments during testing.
+
+## REQUIREMENTS
+
+- FiveM server with OneSync
+- Qbox, QBCore, or ESX Legacy
+- Compatible inventory system
+- oxmysql
+- Supported GTA V freemode character
+
+Refer to the included installation guide for any additional dependencies.
+
+---
+
+**PRICE: FREE — $0.00**
+
+**DEVELOPED BY DAN6CD**
+
+Created for the FiveM development and roleplay community.
+
+*Independent FiveM modification. Not affiliated with Rockstar Games, Cfx.re, or the framework developers.*
